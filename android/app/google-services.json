@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "309567695969",
+    "project_id": "todo-react-native-android",
+    "storage_bucket": "todo-react-native-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:309567695969:android:4f47b3a4ce2c743b1b4e20",
+        "android_client_info": {
+          "package_name": "com.todoreactnative"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "309567695969-gq7qmeciao1rblshpl0i60r322gfinct.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgeha2g6BTcQyRQv9GFU-SzaBjOxT4J3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "309567695969-gq7qmeciao1rblshpl0i60r322gfinct.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:309567695969:android:c1623f038196ba4f1b4e20",
+        "android_client_info": {
+          "package_name": "com.warlock31.todoreactnative"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "309567695969-gq7qmeciao1rblshpl0i60r322gfinct.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgeha2g6BTcQyRQv9GFU-SzaBjOxT4J3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "309567695969-gq7qmeciao1rblshpl0i60r322gfinct.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
