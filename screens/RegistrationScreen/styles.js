@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {theme} from '../../colors';
 
 export default StyleSheet.create({
   container: {
@@ -29,7 +30,7 @@ export default StyleSheet.create({
     paddingLeft: 16,
   },
   button: {
-    backgroundColor: '#788eec',
+    backgroundColor: theme.primary,
     marginHorizontal: 30,
     marginTop: 20,
     height: 48,
@@ -49,10 +50,10 @@ export default StyleSheet.create({
   },
   footerText: {
     fontSize: 16,
-    color: '#2e2e2d',
+    color: theme.secondary,
   },
   footerLink: {
-    color: '#788eec',
+    color: theme.primary,
     fontWeight: 'bold',
     fontSize: 16,
   },

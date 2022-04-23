@@ -1,21 +1,28 @@
 import {StyleSheet} from 'react-native';
+import {theme} from '../../colors';
 
 export default StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
   },
+  header: {
+    flexDirection: 'row',
+    width: '100%',
+    height: 70,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 10,
+  },
+  headerTitle: {
+    fontSize: 20,
+    color: theme.black,
+    fontWeight: 'bold',
+  },
   keyboardScrollView: {
     paddingVertical: 10,
     flex: 1,
     width: '100%',
-  },
-  logo: {
-    flex: 1,
-    height: 120,
-    width: 80,
-    alignSelf: 'center',
-    margin: 30,
   },
   input: {
     height: 48,
@@ -29,9 +36,9 @@ export default StyleSheet.create({
     paddingLeft: 16,
   },
   button: {
-    backgroundColor: '#788eec',
+    backgroundColor: theme.primary,
     marginHorizontal: 30,
-    marginTop: 20,
+    marginTop: 30,
     height: 48,
     borderRadius: 5,
     alignItems: 'center',
@@ -42,18 +49,15 @@ export default StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  footerView: {
-    flex: 1,
+  checkboxWrapper: {
+    flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 10,
+    marginBottom: 10,
+    marginLeft: 30,
+    marginRight: 30,
   },
-  footerText: {
-    fontSize: 16,
-    color: '#2e2e2d',
-  },
-  footerLink: {
-    color: '#788eec',
-    fontWeight: 'bold',
+  checkboxLabel: {
     fontSize: 16,
   },
 });

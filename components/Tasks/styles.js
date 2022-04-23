@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {theme} from '../../colors';
 
 export default StyleSheet.create({
   loadingView: {
@@ -12,24 +13,23 @@ export default StyleSheet.create({
   },
   sectionHeading: {
     color: '#000',
-    fontSize: 24,
+    fontSize: 36,
     fontWeight: 'bold',
   },
   items: {
     borderBottomColor: '#000',
     borderBottomWidth: 1,
   },
-  item: {},
+  tasksWrapper: {
+    height: '100%',
+  },
   emptyTaskList: {
-    height: 200,
-    borderRadius: 10,
-    paddingHorizontal: 10,
-    paddingVertical: 10,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'orange',
+    marginTop: 20,
+    backgroundColor: theme.white,
   },
-
   writeTaskWrapper: {
     position: 'absolute',
     bottom: 60,

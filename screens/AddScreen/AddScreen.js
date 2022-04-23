@@ -1,20 +1,18 @@
 import React, {useState} from 'react';
 import {Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import CheckBox from '@react-native-community/checkbox';
 import Toast from 'react-native-toast-message';
-import {auth} from '../../firebase/config';
 import styles from './styles';
+import {addDoc, collection, serverTimestamp} from 'firebase/firestore';
+import {db} from '../../firebase/config';
 
-const AddScreen = ({navigation}) => {
-  const [email, setEmail] = useState('surpawan@gmail.com');
-  const [password, setPassword] = useState('pawan123');
+const AddScreen = ({navigation, user}) => {
+  const [task, setTask] = useState('');
+  const [completed, setCompleted] = useState(false);
 
-  const onFooterLinkPress = () => {
-    navigation.navigate('Registration');
-  };
-
-  const onLoginPress = async () => {
-    if (email.length === 0) {
+  const onAddTask = async () => {
+    if (task.length === 0) {
       Toast.show({
         type: 'error',
         position: 'bottom',
@@ -23,20 +21,34 @@ const AddScreen = ({navigation}) => {
       return;
     }
 
-    if (password.length === 0) {
+    try {
+      await addDoc(collection(db, 'tasks'), {
+        task: task,
+        completed: completed,
+        createdAt: serverTimestamp(),
+        uid: user.uid,
+      });
+
+      Toast.show({
+        type: 'success',
+        position: 'bottom',
+        text1: 'Task Added Successfully',
+      });
+
+      navigation.navigate('Home');
+    } catch (error) {
       Toast.show({
         type: 'error',
         position: 'bottom',
-        text1: 'Please enter password',
+        text1: error,
       });
-      return;
     }
   };
 
   return (
     <View style={styles.container}>
-      <View>
-        <Text>Add New Task</Text>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Add New Task</Text>
       </View>
       <KeyboardAwareScrollView
         style={styles.keyboardScrollView}
@@ -45,32 +57,21 @@ const AddScreen = ({navigation}) => {
           style={styles.input}
           placeholder="Email"
           placeholderTextColor="#aaaaaa"
-          onChangeText={text => setEmail(text)}
-          value={email}
+          onChangeText={text => setTask(text)}
+          value={task}
           autoCapitalize="none"
           underlineColorAndroid="transparent"
         />
-        <TextInput
-          style={styles.input}
-          placeholderTextColor="#aaaaaa"
-          secureTextEntry
-          placeholder="Password"
-          onChangeText={text => setPassword(text)}
-          value={password}
-          underlineColorAndroid="transparent"
-          autoCapitalize="none"
-        />
-        <TouchableOpacity style={styles.button} onPress={() => onLoginPress()}>
-          <Text style={styles.buttonTitle}>Log in</Text>
-        </TouchableOpacity>
-        <View style={styles.footerView}>
-          <Text style={styles.footerText}>
-            Don't have an account?{' '}
-            <Text onPress={onFooterLinkPress} style={styles.footerLink}>
-              Sign up
-            </Text>
-          </Text>
+        <View style={styles.checkboxWrapper}>
+          <Text style={styles.checkboxLabel}>Completed</Text>
+          <CheckBox
+            value={completed}
+            onValueChange={newValue => setCompleted(newValue)}
+          />
         </View>
+        <TouchableOpacity style={styles.button} onPress={onAddTask}>
+          <Text style={styles.buttonTitle}>Save</Text>
+        </TouchableOpacity>
       </KeyboardAwareScrollView>
     </View>
   );

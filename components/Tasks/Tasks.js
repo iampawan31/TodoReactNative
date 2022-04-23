@@ -1,18 +1,32 @@
-import React, {useState, useEffect} from 'react';
-import {collection, getDocs, addDoc, where, query} from 'firebase/firestore';
-import {db} from '../../firebase/config';
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  doc,
+  updateDoc,
+} from 'firebase/firestore';
+import React, {useEffect, useState} from 'react';
+import {ActivityIndicator, Text, View} from 'react-native';
 import Toast from 'react-native-toast-message';
-import {View, Text, ActivityIndicator} from 'react-native';
-import {Task} from '../../components';
-import styles from './styles';
 import {theme} from '../../colors';
+import {Task} from '../../components';
+import {db} from '../../firebase/config';
+import styles from './styles';
 
-const PendingTasks = ({type, navigation}) => {
-  const [task, setTask] = useState('');
+const PendingTasks = ({type, refresh, onRefreshCompleted, navigation}) => {
   const [loading, setLoading] = useState(true);
   const [taskItems, setTaskItems] = useState([]);
 
   const tasksCollectionRef = collection(db, 'tasks');
+
+  const processTask = async ({uid, completed}) => {
+    const taskRef = doc(db, 'tasks', uid);
+    await updateDoc(taskRef, {
+      completed,
+    });
+    getTasks();
+  };
 
   const getTasks = async () => {
     try {
@@ -34,6 +48,7 @@ const PendingTasks = ({type, navigation}) => {
         position: 'bottom',
         text1: 'Data Fetched Successfully',
       });
+      onRefreshCompleted();
       setLoading(false);
     } catch (error) {
       Toast.show({
@@ -41,19 +56,14 @@ const PendingTasks = ({type, navigation}) => {
         position: 'bottom',
         text1: error,
       });
+      onRefreshCompleted();
       setLoading(false);
     }
   };
 
-  const processTask = completed => {};
-
   useEffect(() => {
     const unsubscribe = navigation.addListener('tabPress', e => {
-      // Prevent default behavior
-
       getTasks();
-      // Do something manually
-      // ...
     });
 
     return unsubscribe;
@@ -64,6 +74,13 @@ const PendingTasks = ({type, navigation}) => {
     getTasks();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (refresh) {
+      getTasks();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refresh]);
 
   if (loading) {
     return (
@@ -81,9 +98,9 @@ const PendingTasks = ({type, navigation}) => {
           taskItems.map((item, index) => (
             <View key={index} style={styles.item}>
               <Task
-                text={item.text}
+                task={item.task}
                 completed={item.completed}
-                completeTask={() => processTask(item.completed)}
+                completeTask={value => processTask(item.uid, value)}
               />
             </View>
           ))

@@ -1,12 +1,13 @@
-import React from 'react';
-
-import {View, Text} from 'react-native';
-import {Tasks, AddTask} from '../../components';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import styles from './styles';
-import {theme} from '../../colors';
 import ActionButton from '@logvinme/react-native-action-button';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import {signOut} from 'firebase/auth';
+import React, {useState} from 'react';
+import {Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {theme} from '../../colors';
+import {Tasks} from '../../components';
+import {auth} from '../../firebase/config';
+import styles from './styles';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -42,6 +43,20 @@ const HomeScreen = ({navigation}) => {
   const dayOfWeek = dayOfWeekArray[date.getDay()];
   const currentMonth = monthOfYearArray[date.getMonth()];
 
+  const [refresh, setRefresh] = useState(false);
+
+  const onRefreshCompleted = () => {
+    setRefresh(false);
+  };
+
+  const logout = async () => {
+    await signOut(auth)
+      .then(() => {
+        navigation.navigate('Login');
+      })
+      .catch(err => console.log(err));
+  };
+
   return (
     <>
       <View style={styles.homeHeader}>
@@ -61,18 +76,38 @@ const HomeScreen = ({navigation}) => {
         screenOptions={{headerShown: false}}>
         <Tab.Screen
           name="All"
-          children={props => <Tasks {...props} type="all" />}
+          children={props => (
+            <Tasks
+              {...props}
+              onRefreshCompleted={onRefreshCompleted}
+              refresh={refresh}
+              type="all"
+            />
+          )}
         />
         <Tab.Screen
           name="Pending"
-          children={props => <Tasks {...props} type="pending" />}
+          children={props => (
+            <Tasks
+              {...props}
+              onRefreshCompleted={onRefreshCompleted}
+              refresh={refresh}
+              type="pending"
+            />
+          )}
         />
         <Tab.Screen
           name="Done"
-          children={props => <Tasks {...props} type="completed" />}
+          children={props => (
+            <Tasks
+              {...props}
+              onRefreshCompleted={onRefreshCompleted}
+              refresh={refresh}
+              type="completed"
+            />
+          )}
         />
       </Tab.Navigator>
-      {/* eslint-disable-next-line react-native/no-inline-styles */}
       <View style={styles.fabButton}>
         {/*Rest of App come ABOVE the action button component!*/}
         <ActionButton buttonColor={theme.secondary}>
@@ -85,13 +120,13 @@ const HomeScreen = ({navigation}) => {
           <ActionButton.Item
             buttonColor={theme.fabColorTwo}
             title="Refresh"
-            onPress={() => console.log('notes tapped!')}>
+            onPress={() => setRefresh(true)}>
             <Icon name="refresh" style={styles.actionButtonIcon} />
           </ActionButton.Item>
           <ActionButton.Item
             buttonColor={theme.fabColorThree}
             title="Logout"
-            onPress={() => {}}>
+            onPress={logout}>
             <Icon name="logout" style={styles.actionButtonIcon} />
           </ActionButton.Item>
         </ActionButton>
