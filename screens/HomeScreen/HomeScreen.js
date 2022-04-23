@@ -36,7 +36,7 @@ const monthOfYearArray = [
   'December',
 ];
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({navigation, user}) => {
   const date = new Date();
   const fullYear = date.getFullYear();
   const currentDate = date.getDate();
@@ -79,6 +79,7 @@ const HomeScreen = ({navigation}) => {
           children={props => (
             <Tasks
               {...props}
+              user={user}
               onRefreshCompleted={onRefreshCompleted}
               refresh={refresh}
               type="all"
@@ -90,6 +91,7 @@ const HomeScreen = ({navigation}) => {
           children={props => (
             <Tasks
               {...props}
+              user={user}
               onRefreshCompleted={onRefreshCompleted}
               refresh={refresh}
               type="pending"
@@ -101,6 +103,7 @@ const HomeScreen = ({navigation}) => {
           children={props => (
             <Tasks
               {...props}
+              user={user}
               onRefreshCompleted={onRefreshCompleted}
               refresh={refresh}
               type="completed"

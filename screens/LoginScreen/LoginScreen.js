@@ -1,14 +1,23 @@
 import {signInWithEmailAndPassword} from 'firebase/auth';
 import React, {useState} from 'react';
-import {Image, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  ActivityIndicator,
+} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Toast from 'react-native-toast-message';
+import {theme} from '../../colors';
 import {auth} from '../../firebase/config';
 import styles from './styles';
 
 const LoginScreen = ({navigation}) => {
-  const [email, setEmail] = useState('surpawan@gmail.com');
-  const [password, setPassword] = useState('pawan123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const onFooterLinkPress = () => {
     navigation.navigate('Registration');
@@ -34,6 +43,7 @@ const LoginScreen = ({navigation}) => {
     }
 
     try {
+      setLoading(true);
       await signInWithEmailAndPassword(auth, email, password).then(
         userCredentials => {
           Toast.show({
@@ -41,11 +51,13 @@ const LoginScreen = ({navigation}) => {
             position: 'bottom',
             text1: 'Login Successful',
           });
+          setLoading(false);
           const user = userCredentials.user;
           navigation.navigate('Home', {user});
         },
       );
     } catch (err) {
+      setLoading(false);
       Toast.show({
         type: 'error',
         position: 'bottom',
@@ -80,7 +92,13 @@ const LoginScreen = ({navigation}) => {
           autoCapitalize="none"
         />
         <TouchableOpacity style={styles.button} onPress={() => onLoginPress()}>
-          <Text style={styles.buttonTitle}>Log in</Text>
+          <Text style={styles.buttonTitle}>
+            {loading ? (
+              <ActivityIndicator size={20} color={theme.white} />
+            ) : (
+              'Log in'
+            )}
+          </Text>
         </TouchableOpacity>
         <View style={styles.footerView}>
           <Text style={styles.footerText}>

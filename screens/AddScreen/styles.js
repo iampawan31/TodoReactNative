@@ -44,6 +44,15 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  cancelButton: {
+    backgroundColor: theme.alternate,
+    marginHorizontal: 30,
+    marginTop: 30,
+    height: 48,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   buttonTitle: {
     color: '#ffffff',
     fontSize: 16,
@@ -58,6 +67,21 @@ export default StyleSheet.create({
     marginRight: 30,
   },
   checkboxLabel: {
+    fontSize: 16,
+  },
+  timePickerSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 30,
+  },
+  selectTime: {
+    justifyContent: 'center',
+  },
+  actionButtonIcon: {
+    fontSize: 36,
+  },
+  selectTimeLabel: {
+    flexGrow: 1,
     fontSize: 16,
   },
 });

@@ -1,17 +1,26 @@
 import {createUserWithEmailAndPassword} from 'firebase/auth';
 import {addDoc, collection} from 'firebase/firestore';
 import React, {useState} from 'react';
-import {Image, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  ActivityIndicator,
+} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Toast from 'react-native-toast-message';
 import {auth, db} from '../../firebase/config';
 import styles from './styles';
+import {theme} from '../../colors';
 
 const RegistrationScreen = ({navigation}) => {
-  const [fullName, setFullName] = useState('Pawan Kumar');
-  const [email, setEmail] = useState('surpawan@gmail.com');
-  const [password, setPassword] = useState('pawan123');
-  const [confirmPassword, setConfirmPassword] = useState('pawan123');
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const onFooterLinkPress = () => {
     navigation.navigate('Login');
@@ -46,6 +55,7 @@ const RegistrationScreen = ({navigation}) => {
     }
 
     try {
+      setLoading(true);
       const res = await createUserWithEmailAndPassword(auth, email, password);
       const user = res.user;
       await addDoc(collection(db, 'users'), {
@@ -55,8 +65,10 @@ const RegistrationScreen = ({navigation}) => {
         email,
       });
 
+      setLoading(false);
       navigation.navigate('Home');
     } catch (err) {
+      setLoading(false);
       Toast.show({
         type: 'error',
         position: 'bottom',
@@ -112,7 +124,13 @@ const RegistrationScreen = ({navigation}) => {
         <TouchableOpacity
           style={styles.button}
           onPress={() => onRegistrationPress()}>
-          <Text style={styles.buttonTitle}>Create Account</Text>
+          <Text style={styles.buttonTitle}>
+            {loading ? (
+              <ActivityIndicator size={20} color={theme.white} />
+            ) : (
+              'Create Account'
+            )}
+          </Text>
         </TouchableOpacity>
         <View style={styles.footerView}>
           <Text style={styles.footerText}>
